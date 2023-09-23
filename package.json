@@ -4,12 +4,14 @@
   "description": "Electronjs website imager",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/**/*.js",
     "start": "electron ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^26.2.2"
+    "chai": "^4.3.8",
+    "electron": "^26.2.2",
+    "mocha": "^10.2.0"
   }
 }

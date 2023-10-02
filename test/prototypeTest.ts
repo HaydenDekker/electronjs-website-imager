@@ -1,10 +1,35 @@
-// const chai = require('chai');
-// const expect = chai.expect;
+import * as chai from 'chai';
+const expect: Chai.ExpectStatic = chai.expect;
+import axios from 'axios'
+import startImagePort from '../image_port/imagePort';
 
-// describe('Rest Interface Definition', () => {
+interface RequestData {
+    name: string;
+    height: number;
+    width: number;
+    }
 
-//     it('should return an image when given a website.', () => {
-//       const result = 1 + 1;
-//       expect(result).to.equal(2);
-//     });
-//   });
+async function callInterface(){
+
+    const resp: String = (await axios.get('http://localhost:8081/')).data;     
+    return resp;
+
+}
+
+describe('Rest Interface Definition', () => {
+
+    let server;
+
+    before(async function () {
+        // Start the Express.js server before running tests
+        server = await startImagePort();
+
+    });
+
+    it('should accept a website image request', async function () {
+     
+        const resp = await callInterface();
+        expect(resp).to.equal('Hello World!');
+
+    });
+  });

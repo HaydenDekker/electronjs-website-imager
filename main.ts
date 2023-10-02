@@ -1,6 +1,7 @@
 import { app, BrowserWindow, BrowserView } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
+import './image_port/imagePort'
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -9,7 +10,6 @@ const createWindow = () => {
       webPreferences: {
         webSecurity: false, // Allow loading insecure content
         offscreen: true,
-    
       },
       show: false
     })

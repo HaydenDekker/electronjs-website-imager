@@ -6,9 +6,11 @@ import { spawn, ChildProcess } from 'child_process';
 
 // Path to your Electron app's main script
 const appPath = path.join(__dirname, '../main.js');
-console.log(appPath);
 // Spawn an Electron process
-const electronProcess = spawn("C:/Users/Hayden Dekker/workspace_23/electronjs-website-imager/node_modules/electron/dist/electron.exe", [appPath]);
+// C:/Users/Hayden Dekker/workspace_23/electronjs-website-imager
+const electronProcess = spawn(
+        path.join(__dirname,'../../node_modules/electron/dist/electron.exe'), 
+        [appPath]);
 
 // Handle Electron process events
 electronProcess.stdout.on('data', (data) => {

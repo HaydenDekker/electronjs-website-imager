@@ -1,7 +1,7 @@
 import { app, BrowserWindow, BrowserView } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
-import './image_port/imagePort'
+import imagePort from './image_port/imagePort';
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -30,5 +30,7 @@ const createWindow = () => {
   app.commandLine.appendSwitch('ignore-certificate-errors'); 
 
   app.whenReady().then(() => {
-    createWindow()
+    console.log("Main app ready");
+    //createWindow();
+    imagePort(8083);
   })

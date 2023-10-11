@@ -2,6 +2,8 @@ import * as chai from 'chai';
 const expect: Chai.ExpectStatic = chai.expect;
 import * as path from 'path';
 import { spawn, ChildProcess } from 'child_process';
+import axios from 'axios'
+
 //import * as electron from 'electron';
 
 // Path to your Electron app's main script
@@ -25,10 +27,30 @@ electronProcess.on('close', (code) => {
   console.log(`Electron process exited with code ${code}`);
 });
 
-describe('Website Imager System', () => {
+async function callInterface(queryParams : RequestData, imagePortPortNumber: number){
 
-  it('should return an image when given a website.', () => {
-    const result = 1 + 1;
-    expect(result).to.equal(2);
-  });
+  const resp: RequestResponse = (await axios.get('http://localhost:' + imagePortPortNumber.toString() + '/', {
+      params: queryParams
+  })).data;
+  return resp;
+
+}
+
+describe('Electron Process', () => {
+
+  it('should start electron for testing.', (done) => {
+
+      const rd: RequestData = {
+        height: 200,
+        width: 2000,
+        name: "http://hdekker.com"
+      }
+
+      setTimeout(async ()=>{
+        const resp = await callInterface(rd, 8083);
+        console.log("resp received.");
+        done();
+      }, 4000);
+
+  }).timeout(30000);
 });

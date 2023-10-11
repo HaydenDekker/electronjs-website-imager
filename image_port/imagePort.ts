@@ -1,20 +1,47 @@
-import express from 'express'
+import { App } from 'electron';
+import express, { Application } from 'express'
+import { Server } from 'http';
 import { resolve } from 'path';
+import takeImage from '../electron_image/electron-image';
 
 const app = express();
-const port = 8081;
+let serverInstance: any = null;
 
-function startImagePort(){
+function imagePort(port: number): Promise<Server>{
+
     return new Promise((res, rej) =>{
 
-        app.get('/', (req, res) => {
-            res.send('Hello World!')
+        if (serverInstance) {
+            // If the server is already running, resolve with the existing app instance
+            resolve(serverInstance);
+            return;
+          }
+
+        app.get('/', async (req, res) => {
+
+            const rd: RequestData = {
+                name: req.query.name as string,
+                height: Number(req.query.height),
+                width: Number(req.query.width),
+            };
+
+            // Check if any required properties are missing or invalid
+            if (!rd.name || isNaN(rd.height) || isNaN(rd.width)) {
+                res.status(400).json({ error: 'Invalid request data' });
+                return;
+            }
+
+            console.log("Getting image.");
+            const resp = await takeImage(rd);
+
+            res.send(resp);
         })
         
-        app.listen(port, () => {
-            console.log(`Example app listening on port ${port}`)
-            res(app);
+        serverInstance = app.listen(port, () => {
+            console.log(`Example app listening on port ${port}`);
         })
+
+        res(serverInstance);
 
         app.on('error', (error)=>{
             rej(error);
@@ -24,4 +51,4 @@ function startImagePort(){
     
 }
 
-export default startImagePort;
+export default imagePort;

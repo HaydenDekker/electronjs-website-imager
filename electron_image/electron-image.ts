@@ -2,6 +2,7 @@ import { app, BrowserWindow, BrowserView } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import { randomUUID } from 'crypto';
+import {_BASE_DIR_IMAGES} from '../app-config'
 
 function takeImage(rd: RequestData): Promise<RequestResponse>{
 
@@ -22,23 +23,23 @@ function takeImage(rd: RequestData): Promise<RequestResponse>{
 
     let resp: RequestResponse = {
         requestData: rd,
-        imageFileName: fname + '.png'
+        imageFileName: _BASE_DIR_IMAGES + '/' + fname + '.png'
     };
 
     
-    return new Promise((res, rej)=>{
+    return new Promise(async (res, rej)=>{
 
         console.log("opening " + rd.name);
-        win.loadURL(rd.name);
+        await win.loadURL(rd.name);
 
         console.debug("listening for paint.")
         win.webContents.on('paint', (event, dirty, image) => {
             console.debug("painted.");
-            fs.writeFileSync( fname + '.png', image.toPNG())
+            fs.writeFileSync( resp.imageFileName, image.toPNG())
+            win.close();
             res(resp);
         });
-        console.debug("setting frame.");
-        win.webContents.setFrameRate(60);
+        win.webContents.setFrameRate(1);
 
     });
 }

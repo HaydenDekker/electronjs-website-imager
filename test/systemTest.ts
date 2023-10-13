@@ -3,13 +3,14 @@ const expect: Chai.ExpectStatic = chai.expect;
 import * as path from 'path';
 import { spawn, ChildProcess } from 'child_process';
 import axios from 'axios'
+import fs from 'fs';
+import {_BASE_DIR_IMAGES} from '../app-config'
 
 //import * as electron from 'electron';
 
 // Path to your Electron app's main script
 const appPath = path.join(__dirname, '../main.js');
 // Spawn an Electron process
-// C:/Users/Hayden Dekker/workspace_23/electronjs-website-imager
 const electronProcess = spawn(
         path.join(__dirname,'../../node_modules/electron/dist/electron.exe'), 
         [appPath]);
@@ -36,7 +37,34 @@ async function callInterface(queryParams : RequestData, imagePortPortNumber: num
 
 }
 
+function checkForFile(fileName: string): Promise<String>{
+  return new Promise((res, rej)=>{
+
+      // Use fs.access to check if the file exists
+      fs.access( fileName, fs.constants.F_OK, (err) => {
+          if (err) {
+              console.error('File'
+                  + fileName 
+                  + ' does not exist');
+              rej(err);
+          } else {
+              console.log('File ' + fileName + ' exists');
+              res(fileName);
+          }
+      });
+
+  });
+
+}
+
 describe('Electron Process', () => {
+
+  afterEach(function(){
+
+    console.log("Test finished.");
+    electronProcess.kill();
+
+  });
 
   it('should start electron for testing.', (done) => {
 
@@ -46,9 +74,25 @@ describe('Electron Process', () => {
         name: "http://hdekker.com"
       }
 
+      const rd2: RequestData = {
+        height: 200,
+        width: 2000,
+        name: "http://github.com"
+      }
+
+      const rdArr: Array<RequestData> = [rd, rd2];
+      const promises: Promise<String>[] = [];
+
       setTimeout(async ()=>{
-        const resp = await callInterface(rd, 8083);
-        console.log("resp received.");
+        rdArr.forEach(async data => {
+          const resp = callInterface(data, 8083)
+            .then((r)=>checkForFile(r.imageFileName));
+          promises.push(resp);
+        });
+        const files = await Promise.all(promises);
+        files.forEach(f=>{
+          expect(f).not.null;
+        })
         done();
       }, 4000);
 

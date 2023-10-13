@@ -5,7 +5,7 @@ import './spawnElectron'
 import imagePort from '../image_port/imagePort';
 import { Application } from 'express';
 import { Server } from 'http';
-import fs from 'fs';
+
 
 const targetEndpoint: string = "http://localhost:8081";
 const imagePortPortNumber = 8083;
@@ -22,26 +22,6 @@ async function callInterface(){
         params: queryParams
     })).data;
     return resp;
-
-}
-
-function checkForFile(fileName: string){
-    return new Promise((res, rej)=>{
-
-        // Use fs.access to check if the file exists
-        fs.access(fileName, fs.constants.F_OK, (err) => {
-            if (err) {
-                console.error('File'
-                    + fileName 
-                    + ' does not exist');
-                rej(err);
-            } else {
-                console.log('File ' + fileName + 'exists');
-                res(fileName);
-            }
-        });
-
-    });
 
 }
 
@@ -63,8 +43,7 @@ describe('Image Port Interface Definition', () => {
 
         const resp: RequestResponse = await callInterface();
         expect(resp.requestData.name).to.equal(targetEndpoint);
-        const fileOnSystem = await checkForFile(resp.imageFileName);
-        expect(fileOnSystem).not.null;
+        
 
     }).timeout(70000);
 

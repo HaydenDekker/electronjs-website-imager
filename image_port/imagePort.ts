@@ -31,7 +31,7 @@ function imagePort(port: number): Promise<Server>{
                 return;
             }
 
-            console.log("Getting image.");
+            console.log("Requesting image for " + JSON.stringify(rd));
             const resp = await takeImage(rd);
 
             res.send(resp);

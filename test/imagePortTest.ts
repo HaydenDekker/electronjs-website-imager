@@ -8,7 +8,7 @@ import { Server } from 'http';
 
 
 const targetEndpoint: string = "http://localhost:8081";
-const imagePortPortNumber = 8083;
+const imagePortPortNumber = 8084;
 
 const queryParams : RequestData = {
         name: targetEndpoint,
@@ -25,14 +25,22 @@ async function callInterface(){
 
 }
 
+function imageScraperMock(rd: RequestData): Promise<RequestResponse>{
+    return new Promise((res,rej)=>{
+        const resp: RequestResponse = {
+            requestData: rd,
+            imageFileName: targetEndpoint
+        }
+        res(resp);
+    });
+}
+
 describe('Image Port Interface Definition', () => {
 
     let server: Server;
 
     before(async function () {
-        // Start the Express.js server before running tests
-        server = await imagePort(imagePortPortNumber);
-
+        server = await imagePort(imagePortPortNumber, imageScraperMock);
     });
 
     after(function(){
@@ -40,11 +48,8 @@ describe('Image Port Interface Definition', () => {
     })
 
     it('should accept a website image request', async function () {
-
         const resp: RequestResponse = await callInterface();
         expect(resp.requestData.name).to.equal(targetEndpoint);
-        
-
     }).timeout(70000);
 
   });

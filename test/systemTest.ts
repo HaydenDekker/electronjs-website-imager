@@ -6,8 +6,6 @@ import axios from 'axios'
 import fs from 'fs';
 import {_BASE_DIR_IMAGES} from '../app-config'
 
-//import * as electron from 'electron';
-
 // Path to your Electron app's main script
 const appPath = path.join(__dirname, '../main.js');
 // Spawn an Electron process
@@ -29,18 +27,14 @@ electronProcess.on('close', (code) => {
 });
 
 async function callInterface(queryParams : RequestData, imagePortPortNumber: number){
-
   const resp: RequestResponse = (await axios.get('http://localhost:' + imagePortPortNumber.toString() + '/', {
       params: queryParams
   })).data;
   return resp;
-
 }
 
 function checkForFile(fileName: string): Promise<String>{
   return new Promise((res, rej)=>{
-
-      // Use fs.access to check if the file exists
       fs.access( fileName, fs.constants.F_OK, (err) => {
           if (err) {
               console.error('File'
@@ -60,10 +54,7 @@ function checkForFile(fileName: string): Promise<String>{
 describe('Electron Process', () => {
 
   afterEach(function(){
-
-    console.log("Test finished.");
     electronProcess.kill();
-
   });
 
   it('should start electron for testing.', (done) => {

@@ -2,20 +2,18 @@ import { App } from 'electron';
 import express, { Application } from 'express'
 import { Server } from 'http';
 import { resolve } from 'path';
-import takeImage from '../electron_image/electron-image';
 
 const app = express();
 let serverInstance: any = null;
 
-function imagePort(port: number): Promise<Server>{
+function imagePort(port: number, imageScraper: ImageScraper): Promise<Server>{
 
+    console.log("Starting image port. ");
     return new Promise((res, rej) =>{
-
         if (serverInstance) {
-            // If the server is already running, resolve with the existing app instance
             resolve(serverInstance);
             return;
-          }
+        }
 
         app.get('/', async (req, res) => {
 
@@ -32,7 +30,7 @@ function imagePort(port: number): Promise<Server>{
             }
 
             console.log("Requesting image for " + JSON.stringify(rd));
-            const resp = await takeImage(rd);
+            const resp = await imageScraper(rd);
 
             res.send(resp);
         })

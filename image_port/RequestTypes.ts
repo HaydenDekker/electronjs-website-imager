@@ -8,3 +8,5 @@ interface RequestResponse{
     requestData: RequestData,
     imageFileName: string 
 }
+
+type ImageScraper = (requestDate: RequestData) => Promise<RequestResponse>;

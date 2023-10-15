@@ -4,12 +4,13 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
+                script {
                 // Install Node.js and npm (if not already installed)
-                def nvmInstalled = sh(script: 'command -v nvm', returnStatus: true)
-                if (nvmInstalled != 0) {
-                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash'
+                    def nvmInstalled = sh(script: 'command -v nvm', returnStatus: true)
+                    if (nvmInstalled != 0) {
+                        sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash'
+                    }
                 }
-
                 sh 'nvm install 18'  // Use the desired Node.js version
                 sh 'nvm use 18'
                 sh 'npm install'  // Install project dependencies

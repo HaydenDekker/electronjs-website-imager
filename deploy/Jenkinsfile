@@ -19,7 +19,7 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
+         stage('Install Dependencies') {
             steps {
                 script {
                 // Install Node.js and npm (if not already installed)
@@ -39,15 +39,16 @@ pipeline {
                 }
                 
             }
-        }
+         }
 
         stage('Deploy') {
             steps {
                 sshagent(credentials: ['6b4b4214-61f8-4328-a565-f14961fb227c']) {
                     sh """
-                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} 'rm -r ${REMOTE_PROJECT_FOLDER}/*'
-                        scp -r ./ hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
-                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} 'rm -r ${REMOTE_PROJECT_FOLDER}/*'
+                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} "if [ -z \"\$(ls -A ${REMOTE_PROJECT_FOLDER})\" ]; then echo 'Directory is empty'; else rm -r ${REMOTE_PROJECT_FOLDER}/*; fi"
+                        scp -r ./dist hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
+                        scp -r ./package.json hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
+                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} 'npm -C ${REMOTE_PROJECT_FOLDER}/ install'
                     """
                 }
             }

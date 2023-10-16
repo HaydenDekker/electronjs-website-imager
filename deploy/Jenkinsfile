@@ -1,36 +1,58 @@
 pipeline {
     agent any
     
+    environment {
+        SSH_CREDENTIALS = credentials('06375e47-11d5-49ee-a096-94ba50ba035e') 
+        // Replace with your SSH credentials ID - non root - 6b4b4214-61f8-4328-a565-f14961fb227c
+        REMOTE_SERVER = '192.168.8.99' // Replace with your remote server hostname or IP
+        REMOTE_PROJECT_FOLDER = 'Documents/website-imager'
+        
+    
+    }
+    
     stages {
+        
+        stage('Checkout Git Repository') {
+            steps {
+                // Specify the Git repository URL and branch
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/HaydenDekker/electronjs-website-imager/']]])
+            }
+        }
+        
         stage('Install Dependencies') {
             steps {
                 script {
                 // Install Node.js and npm (if not already installed)
                     def nvmInstalled = sh(script: 'command -v nvm', returnStatus: true)
                     if (nvmInstalled != 0) {
-                        sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash'
+                        sh '''
+                            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+                            export NVM_DIR="$HOME/.nvm"
+                            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                            [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+                            nvm install 18
+                            nvm use 18
+                            npm install
+                            npm run compile
+                        '''
                     }
                 }
-                sh 'nvm install 18'  // Use the desired Node.js version
-                sh 'nvm use 18'
-                sh 'npm install'  // Install project dependencies
+                
             }
         }
 
-        stage('Compile') {
+        stage('Deploy') {
             steps {
-                // Run your Node.js build script or commands
-                sh 'npm run build'  // Adjust this to match your project's build script
+                sshagent(credentials: ['6b4b4214-61f8-4328-a565-f14961fb227c']) {
+                    sh """
+                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} 'rm -r ${REMOTE_PROJECT_FOLDER}/*'
+                        scp -r ./ hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
+                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} 'rm -r ${REMOTE_PROJECT_FOLDER}/*'
+                    """
+                }
             }
         }
     }
     
-    post {
-        success {
-            // Add post-build actions here if needed
-        }
-        failure {
-            // Add failure handling here if needed
-        }
-    }
+   
 }

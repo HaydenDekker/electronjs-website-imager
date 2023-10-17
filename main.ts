@@ -7,6 +7,7 @@ import { _IMAGER_PORT } from './app-config';
 
   // Disable certificate verification
   app.commandLine.appendSwitch('ignore-certificate-errors'); 
+  app.disableHardwareAcceleration();
 
   app.whenReady().then(() => {
     console.log("Main app ready");

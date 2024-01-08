@@ -36,7 +36,7 @@ function takeImage(rd: RequestData): Promise<RequestResponse>{
         win.webContents.on('paint', (event, dirty, image) => {
             console.debug("painted.");
             fs.writeFileSync( resp.imageFileName, image.toPNG())
-            win.close();
+            //win.close();
             console.debug("Sending resp.");
             res(resp);
         });

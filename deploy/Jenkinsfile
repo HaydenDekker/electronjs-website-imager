@@ -50,6 +50,7 @@ pipeline {
                         scp -r ./node_modules hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
                         scp -r ./package.json hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
                         scp -r ./deploy/runtime_env hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
+                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} "cd ${REMOTE_PROJECT_FOLDER}/runtime_env && docker build -t imager . && docker run --privileged --detach -p 8084:8084 -v /home/hayden/Documents/website-imager:/app imager"
                     """
                 }
             }

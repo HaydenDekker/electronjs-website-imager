@@ -21,3 +21,6 @@ IMAGER_PORT - Defines port for GET api, see imagePort test
 deploy/Jenkinsfile - Load this on the target jenkins instance, provide target server and credentials before running. This copies the application to a local folder before running deploy/runtime_env/dockerfile to build the image and starting the container.
 
 deploy/runtime_env/dockerfile - This dockerfile installs nodejs, copies the application over and uses a headless display driver to run electronJS behind the scenes. This file is used by the Jenkinsfile above.
+
+# TODO
+- Manage Browser Windows - Closing the last open electron browser window triggers electron to close the entire application. This would require docker to restart after each operation. Keeping the window open allows the app to remain available for requests but that means managing the growing number window created.

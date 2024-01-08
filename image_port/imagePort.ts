@@ -42,6 +42,7 @@ function imagePort(port: number, imageScraper: ImageScraper): Promise<Server>{
         res(serverInstance);
 
         app.on('error', (error)=>{
+            console.log(error);
             rej(error);
         })
 

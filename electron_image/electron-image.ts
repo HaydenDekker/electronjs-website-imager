@@ -37,6 +37,7 @@ function takeImage(rd: RequestData): Promise<RequestResponse>{
             console.debug("painted.");
             fs.writeFileSync( resp.imageFileName, image.toPNG())
             win.close();
+            console.debug("Sending resp.");
             res(resp);
         });
         win.webContents.setFrameRate(1);

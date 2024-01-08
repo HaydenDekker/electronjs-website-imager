@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run compile && mocha dist/test/**/*.js",
     "start": "npm run compile && electron dist/main.js",
-    "compile": "tsc"
+    "compile": "tsc",
+    "prod": "electron ./dist/main.js"
   },
   "author": "",
   "license": "ISC",

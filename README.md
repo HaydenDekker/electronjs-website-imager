@@ -18,7 +18,7 @@ IMAGER_PORT - Defines port for GET api, see imagePort test
 1. Open a rest interface to the application and send packet to it representing the website object, expect electronimager is called and data can be received.
 
 # Deployment
-deploy/Jenkinsfile - Load this on the target jenkins instance, provide target server and credentials before running. This copies the application to a local folder before running deploy/runtime_env/dockerfile to build the image and starting the container.
+deploy/Jenkinsfile - Load this on the target jenkins instance and provide target server and credentials before running. This copies the application to a local folder before running deploy/runtime_env/dockerfile to build the image and starting the container.
 
 deploy/runtime_env/dockerfile - This dockerfile installs nodejs, copies the application over and uses a headless display driver to run electronJS behind the scenes. This file is used by the Jenkinsfile above.
 

@@ -41,7 +41,7 @@ pipeline {
             }
         }
 
-        stage('Copy and Deploy') {
+        stage('Copy') {
             steps {
                 sshagent(credentials: ['6b4b4214-61f8-4328-a565-f14961fb227c']) {
                     sh """
@@ -50,6 +50,15 @@ pipeline {
                         scp -r ./node_modules hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
                         scp -r ./package.json hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
                         scp -r ./deploy/runtime_env hayden@${REMOTE_SERVER}:${REMOTE_PROJECT_FOLDER}
+                        """
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sshagent(credentials: ['6b4b4214-61f8-4328-a565-f14961fb227c']) {
+                    sh """
                         ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} "cd ${REMOTE_PROJECT_FOLDER}/runtime_env && docker build -t imager . && docker run --privileged --detach -p 8084:8084 -v /home/hayden/Documents/website-imager:/app imager"
                     """
                 }

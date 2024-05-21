@@ -18,4 +18,5 @@ artifacts:
     - dist/*
     - node_modules/*
     - package.json
+    - appspec.yml
   discard-paths: no

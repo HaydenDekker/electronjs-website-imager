@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+  build:
+    commands:
+      - echo Build started on `date`
+      - npm run compile
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - deploy/*
+    - dist/*
+    - node_modules/*
+    - package.json
+  discard-paths: no
+k

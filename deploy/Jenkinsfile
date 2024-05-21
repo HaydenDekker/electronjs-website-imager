@@ -59,7 +59,7 @@ pipeline {
             steps {
                 sshagent(credentials: ['6b4b4214-61f8-4328-a565-f14961fb227c']) {
                     sh """
-                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} "cd ${REMOTE_PROJECT_FOLDER}/runtime_env && docker build -t imager . && docker run --privileged --detach -p 8084:8084 -v /home/hayden/Documents/website-imager:/app imager"
+                        ssh -v -o StrictHostKeyChecking=no -l hayden ${REMOTE_SERVER} "cd ${REMOTE_PROJECT_FOLDER}/runtime_env && . build_image.sh && . stop_container.sh && . start_container.sh"
                     """
                 }
             }

@@ -1,0 +1,23 @@
+version: 0.0
+os: linux
+hooks:
+  ApplicationStop:
+    - location: stop.sh
+      timeout: 200
+      runas: root
+  BeforeInstall:
+    - location: before.sh
+      timeout: 200
+      runas: root
+  AfterInstall:
+    - location: afterinstall.sh
+      timeout: 200
+      runas: root
+  ApplicationStart:
+    - location: start.sh
+      timeout: 200
+      runas: root
+  ValidateService:
+    - location: validate.sh
+      timeout: 200
+      runas: root

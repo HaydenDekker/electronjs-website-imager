@@ -18,4 +18,3 @@ artifacts:
     - node_modules/*
     - package.json
   discard-paths: no
-k

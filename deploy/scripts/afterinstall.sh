@@ -1,3 +1,3 @@
 echo "after install"
 
-docker build -t website-imager ../runtime_env
+docker build -t website-imager ./deploy/runtime_env/

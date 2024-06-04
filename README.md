@@ -25,6 +25,8 @@ deploy/Jenkinsfile - Load this on the target jenkins instance and provide target
 
 deploy/runtime_env/dockerfile - This dockerfile installs nodejs, copies the application over and uses a headless display driver to run electronJS behind the scenes. This file is used by the Jenkinsfile above.
 
+builspec.yml and appspec.yml - Use in AWS CodePipeline to deploy to a AWS EC2 instance.
+
 # Useage
 With the service running,
 Execute, 

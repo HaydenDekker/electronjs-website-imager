@@ -2,22 +2,22 @@ version: 0.0
 os: linux
 hooks:
   ApplicationStop:
-    - location: deploy/stop.sh
+    - location: deploy/scripts/stop.sh
       timeout: 200
       runas: root
   BeforeInstall:
-    - location: deploy/before.sh
+    - location: deploy/scripts/before.sh
       timeout: 200
       runas: root
   AfterInstall:
-    - location: deploy/afterinstall.sh
+    - location: deploy/scripts/afterinstall.sh
       timeout: 200
       runas: root
   ApplicationStart:
-    - location: deploy/start.sh
+    - location: deploy/scripts/start.sh
       timeout: 200
       runas: root
   ValidateService:
-    - location: deploy/validate.sh
+    - location: deploy/scripts/validate.sh
       timeout: 200
       runas: root

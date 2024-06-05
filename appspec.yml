@@ -11,7 +11,7 @@ hooks:
       runas: root
   AfterInstall:
     - location: deploy/scripts/afterinstall.sh
-      timeout: 200
+      timeout: 2000
       runas: root
   ApplicationStart:
     - location: deploy/scripts/start.sh

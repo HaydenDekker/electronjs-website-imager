@@ -1,3 +1,11 @@
+#!/bin/bash
+
 echo "after install"
 
-docker build -t website-imager ./deploy/runtime_env/
+script_dir="$( dirname -- "$BASH_SOURCE" )"
+
+echo $script_dir
+
+cd $script_dir
+
+docker build -t website-imager ../runtime_env/

@@ -15,8 +15,8 @@ phases:
 artifacts:
   files:
     - deploy/**/*
-    - dist/*
-    - node_modules/*
+    - dist/**/*
+    - node_modules/**/*
     - package.json
     - appspec.yml
   discard-paths: no

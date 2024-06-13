@@ -3,10 +3,11 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18.18.2
+      nodejs: 18
   build:
     commands:
       - echo Build started on `date`
+      - npm --version
       - npm install
       - npm run compile
   post_build:

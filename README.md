@@ -23,9 +23,11 @@ To run tests see package.json -> scripts and execute relevant script e.g. 'npm r
 # Deployment
 deploy/Jenkinsfile - Load this on the target jenkins instance and provide target server and credentials before running. This copies the application to a local folder before running deploy/runtime_env/dockerfile to build the image and starting the container.
 
-deploy/runtime_env/dockerfile - This dockerfile installs nodejs, copies the application over and uses a headless display driver to run electronJS behind the scenes. This file is used by the Jenkinsfile above.
+deploy/runtime_env/dockerfile - This dockerfile installs a nodejs environment, and uses a headless display driver to run electronJS behind the scenes. This file is used by the Jenkinsfile above and the codeDeploy appspec script for after install. The application 
 
 builspec.yml and appspec.yml - Use in AWS CodePipeline to deploy to a AWS EC2 instance.
+
+The compiled /dist folder needs to be copied to the location of the volume used by the dockerfile so that is can install when starting. Probably a much simpler way of doing that.
 
 # Useage
 With the service running,
@@ -35,3 +37,4 @@ and observe the image in the configured folder after the response is returned.
 
 # TODO
 - Manage Browser Windows - Closing the last open electron browser window triggers electron to close the entire application. This would require docker to restart after each operation. Keeping the window open allows the app to remain available for requests but that means managing the growing number window created.
+- Check that images directory is write accessible and flag warning if not

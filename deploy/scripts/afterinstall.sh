@@ -10,8 +10,6 @@ cd $script_dir
 
 docker build -t website-imager ../runtime_env/
 
-cp -R -f ../../dist ~/website-imager
+sudo cp -R -f ../../dist ~/website-imager
 
-cp -R -f ../../node_modules ~/website-imager
-
-cp -f ../../package.json ~/website-imager
+sudo cp -f ../../package.json ~/website-imager

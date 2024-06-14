@@ -44,11 +44,11 @@ RUN chmod +x /usr/local/bin/startx
 VOLUME /app
 
 WORKDIR /app
-RUN groupadd -g 1020 myuser
-RUN useradd -u 1020 -g myuser -m -s /bin/bash myuser
-RUN chown myuser:myuser /usr/local/bin/startx
+#RUN groupadd -g 1020 myuser
+#RUN useradd -u 1020 -g myuser -m -s /bin/bash myuser
+#RUN chown myuser:myuser /usr/local/bin/startx
 
-USER myuser
+#USER myuser
 RUN ls -la /usr/local/bin/
 
 ENV NVM_DIR=/usr/local/.nvm

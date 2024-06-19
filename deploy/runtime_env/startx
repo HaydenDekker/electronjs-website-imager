@@ -4,7 +4,8 @@ echo "Starting x server"
 nohup Xorg -config /etc/X11/xorg.conf.d/20-dummy.conf :3 &
 echo "server started"
 
-# ideally this is moved to build but was hard to get the correct electron version
+# still need to run this even though build modules have been copied at deploy time.
+# otherwise node could not detect the electron installation binary.
 npm install
 
 DISPLAY=:3 npm run prod

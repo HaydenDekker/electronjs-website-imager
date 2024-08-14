@@ -27,7 +27,7 @@ deploy/runtime_env/dockerfile - This dockerfile installs a nodejs environment, a
 
 builspec.yml and appspec.yml - Use in AWS CodePipeline to deploy to a AWS EC2 instance.
 
-The compiled /dist folder needs to be copied to the location of the volume used by the dockerfile so that is can install when starting. Probably a much simpler way of doing that.
+The compiled /dist folder needs to be copied to the location of the volume used by the dockerfile so that is can install when starting. The script afterinstall.sh copies the binaries to the home working foler ~/website-imager. It also sets the permissions for chrome-sandbox required by electron to run in a docker container as a user.
 
 # Useage
 With the service running,

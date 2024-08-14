@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Starting x server"
+rm /tmp/.X3-lock 2> /dev/null
 nohup Xorg -config /etc/X11/xorg.conf.d/20-dummy.conf :3 &
 echo "server started"
 
